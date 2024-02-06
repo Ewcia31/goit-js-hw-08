@@ -15,6 +15,17 @@ const saveToStorage = throttle(() => {
   localStorage.setItem(localStorageKey, JSON.stringify(messageContent));
 }, 500);
 
+const checkInputs = () => {
+  const emailValue = email.value.trim();
+  const messageValue = message.value.trim();
+
+  if (!emailValue || !messageValue) {
+    alert('Proszę wypełnić oba pola formularza!');
+    return false;
+  }
+  return true;
+};
+
 form.addEventListener('input', saveToStorage);
 
 const storedMessage = () => {
@@ -34,6 +45,15 @@ storedMessage();
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-  localStorage.removeItem(localStorageKey);
-  form.reset();
+
+  if (checkInputs()) {
+    const messageContent = {
+      email: email.value.trim(),
+      message: message.value.trim(),
+    };
+    console.log('Email, Message:', messageContent);
+
+    localStorage.removeItem(localStorageKey);
+    form.reset();
+  }
 });
